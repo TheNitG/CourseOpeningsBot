@@ -7,7 +7,7 @@ import re
 import CourseOpenings
 
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
 client = discord.Client()
 
@@ -42,4 +42,4 @@ async def on_message(message):
         await message.channel.send('Greetings nerd!')
 
 
-client.login(process.env.BOT_TOKEN)
+client.run(TOKEN)
