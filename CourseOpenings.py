@@ -104,7 +104,7 @@ def make_driver():
         # Path to the chrome executable (change if needed to your chrome.exe path)
         options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         # Attempt to create the driver with the necessary configurations
-        driver_attempt = webdriver.Chrome(chrome_driver_binary, options=options)
+        driver_attempt = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=options)
         # Return if successful
         return driver_attempt
     except:
