@@ -1,5 +1,6 @@
 # Import necessary packages
 # Time package used for sleep function
+import os
 from time import sleep
 # Web browser packages
 from selenium import webdriver
@@ -101,15 +102,15 @@ def make_driver():
     # Create the driver object which will be None until the try-except is executed
     try:
         # Path to the chrome executable (change if needed to your chrome.exe path)
-        options.binary_location = r"\Program Files\Google\Chrome\Application\chrome.exe"
+        options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         # Attempt to create the driver with the necessary configurations
         driver_attempt = webdriver.Chrome(chrome_driver_binary, options=options)
         # Return if successful
         return driver_attempt
-    except WebDriverException:
+    except:
         try:
-            # Try another common path
-            options.binary_location = r"\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+            # Path to the chrome executable (change if needed to your chrome.exe path)
+            options.binary_location = r"\Program Files\Google\Chrome\Application\chrome.exe"
             # Attempt to create the driver with the necessary configurations
             driver_attempt = webdriver.Chrome(chrome_driver_binary, options=options)
             # Return if successful
@@ -117,14 +118,22 @@ def make_driver():
         except WebDriverException:
             try:
                 # Try another common path
-                options.binary_location = r"\Users\%UserName%\AppData\Local\Google\Chrome\Application\chrome.exe"
+                options.binary_location = r"\Program Files (x86)\Google\Chrome\Application\chrome.exe"
                 # Attempt to create the driver with the necessary configurations
                 driver_attempt = webdriver.Chrome(chrome_driver_binary, options=options)
                 # Return if successful
                 return driver_attempt
             except WebDriverException:
-                # Throw a WebDriverException
-                raise WebDriverException('Please go into CourseOpenings.py and enter the path of your chrome.exe file')
+                try:
+                    # Try another common path
+                    options.binary_location = r"\Users\%UserName%\AppData\Local\Google\Chrome\Application\chrome.exe"
+                    # Attempt to create the driver with the necessary configurations
+                    driver_attempt = webdriver.Chrome(chrome_driver_binary, options=options)
+                    # Return if successful
+                    return driver_attempt
+                except WebDriverException:
+                    # Throw a WebDriverException
+                    raise WebDriverException('Please go into CourseOpenings.py and enter the path of your chrome.exe file')
 
 
 # # Run the show_course_status method as a thread
