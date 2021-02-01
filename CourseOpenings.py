@@ -97,6 +97,8 @@ def make_driver():
     options = webdriver.ChromeOptions()
     # Make it so browser runs in background
     options.add_argument('headless')
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
     # Path to the chromedriver included in this repository
     chrome_driver_binary = "./chromedriver"
     # Create the driver object which will be None until the try-except is executed
