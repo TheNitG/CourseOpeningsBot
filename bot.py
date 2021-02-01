@@ -42,4 +42,4 @@ async def on_message(message):
         await message.channel.send('Greetings nerd!')
 
 
-client.run(process.env.BOT_TOKEN)
+client.login(process.env.BOT_TOKEN)
