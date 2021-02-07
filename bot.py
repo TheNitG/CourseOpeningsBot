@@ -23,13 +23,12 @@ async def on_message(message):
     content = message.content
     if re.search(r'^c!request \d{5}$', content):
         crn = re.findall(r'\d{5}', content)[0]
-        await message.channel.send(f'Tracking CRN: {crn}')
+        await message.channel.send(f'Tracking CRN: {crn} for {message.author.name}')
         output = await CourseOpenings.show_course_status(message, crn)
         attempts = 1
         while 'CLOSED' in output:
             attempts += 1
-            await message.channel.send(f'Tracking CRN: {crn} Attempt {attempts} in approximately one minute')
-            await asyncio.sleep(60)
+            await message.channel.send(f'Tracking CRN: {crn} Attempt {attempts} for {message.author.name}')
             output = await CourseOpenings.show_course_status(message, crn)
         if attempts != 1:
             await message.channel.send(f'CRN: {crn} is OPEN <@{message.author.id}>')

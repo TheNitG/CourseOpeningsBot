@@ -1,14 +1,10 @@
 # Import necessary packages
-# Time package used for sleep function
 import os
-from time import sleep
 # Web browser packages
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
-# Multithreading package
-from threading import Thread
 ''' HAVE A QUEUE FOR EACH THREAD SO MORE PEOPLE CAN CHECK COURSES EACH TIME'''
 
 
