@@ -63,16 +63,17 @@ async def build_embed(message):
                      icon_url='https://www.hr.vt.edu/content/hr_vt_edu/en/working-at-vt/welcome-to-vt/_jcr_content'
                               '/article-image.transform/m-medium/image.jpg')
 
-    embed.set_thumbnail(url='https://hr.vt.edu/content/dam/hr_vt_edu/_images/HokieBird.jpg.transform/l-medium/image.jpg')
+    embed.set_thumbnail(
+        url='https://hr.vt.edu/content/dam/hr_vt_edu/_images/HokieBird.jpg.transform/l-medium/image.jpg')
 
     embed.add_field(name='Track a course', value='Use "**c!request CRN**" without the quotes and CRN being the 5 digit '
                                                  'CRN of the course you want to track. It will keep checking until '
                                                  'the course is open and will tag you when the course is open. Yes, '
-                                                 'you can track multiple courses at once.',
-                    inline=False)
-    embed.add_field(name='Track a stock over a 1-year period', value='Use "**c!stock TICKR**" without the quotes and '
-                                                                     'TICKR being the 1 to 5 character stock ticker '
-                                                                     'for the stock you want to track.', inline=False)
+                                                 'you can track multiple courses at once.', inline=False)
+    embed.add_field(name='Track a stock over a 1-day period', value='Use "**c!stock TICKR**" without the quotes and '
+                                                                    'TICKR being the 1 to 5 character stock ticker '
+                                                                    'for the stock you want to track. Note: Not '
+                                                                    'case-sensitive', inline=False)
     embed.add_field(name='Magic command', value='Use "**c!hi**" without the quotes for a surprise :open_mouth:.',
                     inline=False)
     embed.add_field(name='Invite link to bring the bot to your own server', value='Use "**c!invite**" without the '
