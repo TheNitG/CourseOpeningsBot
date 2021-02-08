@@ -4,7 +4,7 @@ import os
 import discord
 from dotenv import load_dotenv
 import re
-import CourseOpenings
+import CourseOpenings, Stocks
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
@@ -38,6 +38,12 @@ async def on_message(message):
     # elif re.search('^c!clearall$', content):
     #     await message.channel.send('Clearing all active requests!')
     #     CourseOpenings.close_all()
+    elif re.search(r'^c!stock \w{1,5}', content):
+        ticker = re.search(r'^c!stock (\w+)', content)[1]
+        try:
+            await Stocks.plot_stock(message, ticker)
+        except:
+            await message.channel.send('Not a valid stock ticker, please try a valid stock ticker')
     elif content == 'c!help':
         await build_embed(message)
     elif content == 'c!invite':
@@ -59,11 +65,14 @@ async def build_embed(message):
 
     embed.set_thumbnail(url='https://hr.vt.edu/content/dam/hr_vt_edu/_images/HokieBird.jpg.transform/l-medium/image.jpg')
 
-    embed.add_field(name='Track a course', value='Use "**c!request**" without the quotes and CRN being the 5 digit '
+    embed.add_field(name='Track a course', value='Use "**c!request CRN**" without the quotes and CRN being the 5 digit '
                                                  'CRN of the course you want to track. It will keep checking until '
                                                  'the course is open and will tag you when the course is open. Yes, '
                                                  'you can track multiple courses at once.',
                     inline=False)
+    embed.add_field(name='Track a stock over a 1-year period', value='Use "**c!stock TICKR**" without the quotes and '
+                                                                     'TICKR being the 1 to 5 character stock ticker '
+                                                                     'for the stock you want to track.', inline=False)
     embed.add_field(name='Magic command', value='Use "**c!hi**" without the quotes for a surprise :open_mouth:.',
                     inline=False)
     embed.add_field(name='Invite link to bring the bot to your own server', value='Use "**c!invite**" without the '
