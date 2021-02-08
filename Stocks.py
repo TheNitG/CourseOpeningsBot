@@ -23,4 +23,4 @@ async def plot_stock(message, ticker):
     await message.channel.send(file=discord.File('plot.png'))
     os.remove('plot.png')
     await message.channel.send(f'Current Price: ${format(hist["Open"][-1], ".2f")}, Market Open:'
-                               f' ${tick.info["regularMarketOpen"]}, Previous Close: ${tick.info["previousClose"]}, ')
+                               f' ${tick.info["regularMarketOpen"]}, Previous Close: ${tick.info["previousClose"]}.')
