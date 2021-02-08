@@ -3,7 +3,7 @@ import os
 
 import discord
 import yfinance as yf
-import matplotlib.pyplot as plt
+import mplfinance as mpf
 
 
 async def plot_stock(message, ticker):
@@ -11,16 +11,14 @@ async def plot_stock(message, ticker):
     tick = yf.Ticker(ticker)
     # # Get stock info
     print(tick.info)
-
-    # Get historical market data
-    hist = tick.history(period="1d", interval='1m')
-    closing = hist['Close']
-    print(hist)
-    # Graph the data
-    closing.plot(figsize=(16, 9))
-    plt.title(f'{tick.info["longName"]} Graph Over Past Day')
-    plt.savefig(fname='plot')
+    # Download stock data with 1 minute intervals
+    data = yf.download(ticker, period='1d', interval='1m')
+    mpf.plot(data, type='candle', style='charles', savefig='plot.png', title=f'{tick.info["longName"]} Stock Value '
+                                                                             f'Over Past Day')
     await message.channel.send(file=discord.File('plot.png'))
     os.remove('plot.png')
+
+    # # Get historical market data
+    hist = tick.history(period="1d", interval='1m')
     await message.channel.send(f'Current Price: ${format(hist["Open"][-1], ".2f")}, Market Open:'
                                f' ${tick.info["regularMarketOpen"]}, Previous Close: ${tick.info["previousClose"]}.')
