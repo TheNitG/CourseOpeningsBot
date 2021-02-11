@@ -1,7 +1,6 @@
 import asyncio
 import sys
 from collections import deque
-from time import perf_counter
 
 sys.setrecursionlimit(50000)
 
@@ -225,7 +224,7 @@ async def run_game_helper(message, client, board, turn, human):
                 return False
 
             try:
-                await message.channel.send('Your choice?')
+                await message.channel.send('Your choice? (Note: 0 is the top left and 8 is the bottom right)')
                 msg = await client.wait_for("message", check=check, timeout=30)  # 30 seconds to reply
                 choice = int(msg.content)
                 board = board[:choice] + turn + board[choice + 1:]

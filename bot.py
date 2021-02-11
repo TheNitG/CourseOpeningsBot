@@ -62,7 +62,7 @@ async def on_message(message):
             try:
                 await message.channel.send('What am I playing, X or O?')
                 msg = await client.wait_for("message", check=check, timeout=30)  # 30 seconds to reply
-                await Tictactoe.run_game(message, client, '.........', msg.content)
+                await Tictactoe.run_game(message, client, '.........', msg.content.upper())
                 tictactoe_games.remove(message.author.id)
             except asyncio.TimeoutError:
                 await message.channel.send("Sorry, you didn't reply in time! Try c!tictactoe again!")
