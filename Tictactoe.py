@@ -6,12 +6,12 @@ sys.setrecursionlimit(50000)
 
 
 def goal_test(board):
-    if board[0:3] == "XXX" or board[3:6] == "XXX" or board[6:9] == "XXX" or board[::3] == "XXX" or board[1::3] == "XXX"\
-            or board[2::3] == "XXX" or board[0] == "X" and board[4] == "X" and board[8] == "X" or board[2] == "X"\
+    if board[0:3] == "XXX" or board[3:6] == "XXX" or board[6:9] == "XXX" or board[::3] == "XXX" or board[1::3] == "XXX" \
+            or board[2::3] == "XXX" or board[0] == "X" and board[4] == "X" and board[8] == "X" or board[2] == "X" \
             and board[4] == "X" and board[6] == "X":
         return "X wins"
-    if board[0:3] == "OOO" or board[3:6] == "OOO" or board[6:9] == "OOO" or board[::3] == "OOO" or board[1::3] == "OOO"\
-            or board[2::3] == "OOO" or board[0] == "O" and board[4] == "O" and board[8] == "O" or board[2] == "O"\
+    if board[0:3] == "OOO" or board[3:6] == "OOO" or board[6:9] == "OOO" or board[::3] == "OOO" or board[1::3] == "OOO" \
+            or board[2::3] == "OOO" or board[0] == "O" and board[4] == "O" and board[8] == "O" or board[2] == "O" \
             and board[4] == "O" and board[6] == "O":
         return "O wins"
     if "." in board:
@@ -213,20 +213,24 @@ async def run_game_helper(message, client, board, turn, human):
                 if char == ".":
                     available.append(str(index + 1))
             await message.channel.send("You can move to any of these spaces: %s." % ", ".join(available))
+            emojis = {'1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣', '5': '5️⃣', '6': '6️⃣', '7': '7️⃣', '8': '8️⃣', '9': '9️⃣'}
 
-            def check(mess):
-                if mess.author.id == message.author.id and mess.channel == message.channel:
-                    if mess.content in available:
-                        return True
-                    else:
-                        pass
-                        # await mess.channel.send("Sorry, you must an available position!")
+            def check(react, usr):
+                if usr == message.author and react.message.channel == message.channel:
+                    return str(react.emoji) in '1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣'
                 return False
 
             try:
-                await message.channel.send('Your choice?')
-                msg = await client.wait_for("message", check=check, timeout=30)  # 30 seconds to reply
-                choice = int(msg.content)
+                num_choose = await message.channel.send('Your choice?')
+                for c in available:
+                    await num_choose.add_reaction(emojis[c])
+                reaction, user = await client.wait_for('reaction_add', check=check, timeout=30)  # 30 seconds to react
+                emoji = str(reaction.emoji)
+                choice = 1 if emoji == '1️⃣' else (
+                    2 if emoji == '2️⃣' else (3 if emoji == '3️⃣' else (4 if emoji == '4️⃣'
+                    else (5 if emoji == '5️⃣' else (6 if emoji == '6️⃣' else (7 if emoji == '7️⃣' else
+                                                                              (8 if emoji == '8️⃣' else 9)))))))
+                choice -= 1
                 board = board[:choice] + turn + board[choice + 1:]
                 if turn == "X":
                     turn = "O"
@@ -254,7 +258,7 @@ async def run_game_helper(message, client, board, turn, human):
                 elif condition == "L" and best == "None":
                     best = "L"
                     board = possible
-            await message.channel.send(f'I choose to move to space {moved(old_board, board)}')
+            await message.channel.send(f'I choose to move to space {moved(old_board, board) + 1}')
             if turn == "X":
                 turn = "O"
             else:

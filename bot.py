@@ -46,26 +46,24 @@ async def on_message(message):
             await Stocks.plot_stock(message, ticker)
         except:
             await message.channel.send('Not a valid stock ticker, please try a valid stock ticker')
-    elif content == 'c!tictactoe':
+    elif content == 'c!tictactoe' or content == 'c!ttt':
         if message.author.id not in tictactoe_games:
             tictactoe_games.append(message.author.id)
 
-            def check(mess):
-                if mess.author.id == message.author.id and mess.channel == message.channel:
-                    if mess.content.upper() == 'X' or mess.content.upper() == 'O':
-                        return True
-                    else:
-                        pass
-                        # await mess.channel.send("Sorry, you must input X or O!")
+            def check(react, usr):
+                if usr == message.author and react.message.channel == message.channel:
+                    return str(react.emoji) == '🇽' or str(react.emoji) == '🇴'
                 return False
 
             try:
-                await message.channel.send('What am I playing, X or O?')
-                msg = await client.wait_for("message", check=check, timeout=30)  # 30 seconds to reply
-                await Tictactoe.run_game(message, client, '.........', msg.content.upper())
+                turn_choose = await message.channel.send('What am I playing, X or O?')
+                await turn_choose.add_reaction('🇽')
+                await turn_choose.add_reaction('🇴')
+                reaction, user = await client.wait_for('reaction_add', check=check, timeout=30)  # 30 seconds to react
+                await Tictactoe.run_game(message, client, '.........', 'X' if str(reaction.emoji) == '🇽' else 'O')
                 tictactoe_games.remove(message.author.id)
             except asyncio.TimeoutError:
-                await message.channel.send("Sorry, you didn't reply in time! Try c!tictactoe again!")
+                await message.channel.send("Sorry, you didn't reply in time! Try c!tictactoe or c!ttt again!")
                 tictactoe_games.remove(message.author.id)
                 return
     elif content == 'c!help':
@@ -98,9 +96,9 @@ async def build_embed(message):
                                                                     'TICKR being the 1 to 5 character stock ticker '
                                                                     'for the stock you want to track. Note: Not '
                                                                     'case-sensitive', inline=False)
-    embed.add_field(name='Play tic-tac-toe against an AI!', value='Use "**c!tictactoe**" without the quotes and input '
-                                                                  'when asked to play tic-tac-toe against an AI '
-                                                                  , inline=False)
+    embed.add_field(name='Play tic-tac-toe against an AI!', value='Use "**c!tictactoe** or **c!ttt**" without the quote'
+                                                                  's and input when asked to play tic-tac-toe against a'
+                                                                  'n AI ', inline=False)
     embed.add_field(name='Magic command', value='Use "**c!hi**" without the quotes for a surprise :open_mouth:.',
                     inline=False)
     embed.add_field(name='Invite link to bring the bot to your own server', value='Use "**c!invite**" without the '
