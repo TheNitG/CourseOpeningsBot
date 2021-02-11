@@ -4,12 +4,14 @@ import os
 import discord
 from dotenv import load_dotenv
 import re
-import CourseOpenings, Stocks
+import CourseOpenings, Stocks, Tictactoe
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
 client = discord.Client()
+
+tictactoe_games = []
 
 
 @client.event
@@ -44,6 +46,28 @@ async def on_message(message):
             await Stocks.plot_stock(message, ticker)
         except:
             await message.channel.send('Not a valid stock ticker, please try a valid stock ticker')
+    elif content == 'c!tictactoe':
+        if message.author.id not in tictactoe_games:
+            tictactoe_games.append(message.author.id)
+
+            def check(mess):
+                if mess.author.id == message.author.id and mess.channel == message.channel:
+                    if mess.content.upper() == 'X' or mess.content.upper() == 'O':
+                        return True
+                    else:
+                        pass
+                        # await mess.channel.send("Sorry, you must input X or O!")
+                return False
+
+            try:
+                await message.channel.send('What am I playing, X or O?')
+                msg = await client.wait_for("message", check=check, timeout=30)  # 30 seconds to reply
+                await Tictactoe.run_game(message, client, '.........', msg.content)
+                tictactoe_games.remove(message.author.id)
+            except asyncio.TimeoutError:
+                await message.channel.send("Sorry, you didn't reply in time! Try c!tictactoe again!")
+                tictactoe_games.remove(message.author.id)
+                return
     elif content == 'c!help':
         await build_embed(message)
     elif content == 'c!invite':
@@ -74,6 +98,9 @@ async def build_embed(message):
                                                                     'TICKR being the 1 to 5 character stock ticker '
                                                                     'for the stock you want to track. Note: Not '
                                                                     'case-sensitive', inline=False)
+    embed.add_field(name='Play tic-tac-toe against an AI!', value='Use "**c!tictactoe**" without the quotes and input '
+                                                                  'when asked to play tic-tac-toe against an AI '
+                                                                  , inline=False)
     embed.add_field(name='Magic command', value='Use "**c!hi**" without the quotes for a surprise :open_mouth:.',
                     inline=False)
     embed.add_field(name='Invite link to bring the bot to your own server', value='Use "**c!invite**" without the '
