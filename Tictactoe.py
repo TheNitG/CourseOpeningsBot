@@ -164,7 +164,7 @@ async def print_board(message, board):
         for y in range(N):
             board_print += board[x * N + y] + '  \t'
         board_print += '\n'
-    await message.channel.send(board_print)
+    await message.channel.send("```\n" + board_print + "\n```")
 
 
 def distinct_wins_from_here(board, turn):
