@@ -211,7 +211,7 @@ async def run_game_helper(message, client, board, turn, human):
             available = list()
             for index, char in enumerate(board):
                 if char == ".":
-                    available.append(str(index))
+                    available.append(str(index + 1))
             await message.channel.send("You can move to any of these spaces: %s." % ", ".join(available))
 
             def check(mess):
@@ -224,7 +224,7 @@ async def run_game_helper(message, client, board, turn, human):
                 return False
 
             try:
-                await message.channel.send('Your choice? (Note: 0 is the top left and 8 is the bottom right)')
+                await message.channel.send('Your choice?')
                 msg = await client.wait_for("message", check=check, timeout=30)  # 30 seconds to reply
                 choice = int(msg.content)
                 board = board[:choice] + turn + board[choice + 1:]
