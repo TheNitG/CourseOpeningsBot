@@ -68,7 +68,10 @@ async def on_message(message):
                 return
     elif re.search(r'^c!sudoku (?:\w|\d|.)+$', content):
         puzzle = content[9:]
-        await Sudoku.sudoku_solve(message, puzzle)
+        try:
+            await Sudoku.sudoku_solve(message, puzzle)
+        except:
+            await message.channel.send('Not a valid puzzle, please try a valid puzzle')
     elif content == 'c!help':
         await build_embed(message)
     elif content == 'c!invite':
