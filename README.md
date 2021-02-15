@@ -3,7 +3,7 @@ CourseOpeningsBot is a discord bot made using Python. It serves the same functio
 \
 It can also check the day's data of any stock available on Yahoo Finance and can create candlestick charts from the data.\
 \
-You can also play tic-tac-toe against an AI with this bot.
+You can also play tic-tac-toe against an AI and solve sudoku puzzles with this bot.
 ## Getting Started
 To use Discord bot, you just need to [invite the bot to your Discord server](https://discord.com/api/oauth2/authorize?client_id=805551570342117417&permissions=355392&scope=bot).
 ## Using the Discord bot
