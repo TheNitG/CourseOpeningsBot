@@ -102,6 +102,12 @@ async def build_embed(message):
     embed.add_field(name='Play tic-tac-toe against an AI!', value='Use "**c!tictactoe** or **c!ttt**" without the quote'
                                                                   's and input when asked to play tic-tac-toe against a'
                                                                   'n AI ', inline=False)
+    embed.add_field(name='Use the bot to solve sudoku puzzles very quickly!', value='Use "**c!sudoku PUZZLE** without'
+                                                                                    'the quotes and PUZZLE being the'
+                                                                                    'sudoku puzzle to solve (Note: use'
+                                                                                    '"." without the quotes for'
+                                                                                    'empty/blank spaces',
+                    inline=False)
     embed.add_field(name='Magic command', value='Use "**c!hi**" without the quotes for a surprise :open_mouth:.',
                     inline=False)
     embed.add_field(name='Invite link to bring the bot to your own server', value='Use "**c!invite**" without the '
