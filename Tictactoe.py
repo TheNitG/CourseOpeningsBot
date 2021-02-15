@@ -217,7 +217,9 @@ async def run_game_helper(message, client, board, turn, human):
 
             def check(react, usr):
                 if usr == message.author and react.message.channel == message.channel:
-                    return str(react.emoji) in '1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣'
+                    for spot in available:
+                        if str(react.emoji) == emojis[spot]:
+                            return True
                 return False
 
             try:
