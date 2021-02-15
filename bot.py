@@ -4,7 +4,7 @@ import os
 import discord
 from dotenv import load_dotenv
 import re
-import CourseOpenings, Stocks, Tictactoe
+import CourseOpenings, Stocks, Tictactoe, Sudoku
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
@@ -66,6 +66,9 @@ async def on_message(message):
                 await message.channel.send("Sorry, you didn't reply in time! Try c!tictactoe or c!ttt again!")
                 tictactoe_games.remove(message.author.id)
                 return
+    elif re.search(r'^c!sudoku (?:\w|\d|.)+$', content):
+        puzzle = content[9:]
+        await Sudoku.sudoku_solve(message, puzzle)
     elif content == 'c!help':
         await build_embed(message)
     elif content == 'c!invite':
