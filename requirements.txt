@@ -1,5 +1,5 @@
-discord~=1.0.1
-python-dotenv~=0.15.0
+discord==1.7.3
+python-dotenv==0.18.0
 selenium~=3.141.0
 yfinance~=0.1.55
 mplfinance~=0.12.7a5

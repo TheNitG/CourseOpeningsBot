@@ -1,10 +1,15 @@
 # bot.py
 import asyncio
 import os
+import re
+
 import discord
 from dotenv import load_dotenv
-import re
-import CourseOpenings, Stocks, Tictactoe, Sudoku
+
+import CourseOpenings
+import Stocks
+import Sudoku
+import Tictactoe
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
@@ -36,10 +41,11 @@ async def on_message(message):
             await message.channel.send(f'CRN: {crn} is OPEN <@{message.author.id}>')
         await message.channel.send('Closing request. Thanks for using Course Openings Bot!')
     # Add elif for Course Subject (Space) Number
-    # Add elif for Invalid crn but has c!request
     # elif re.search('^c!clearall$', content):
     #     await message.channel.send('Clearing all active requests!')
     #     CourseOpenings.close_all()
+    elif re.search(r'^c!request', content):
+        await message.channel.send('Not proper usage of c!request, please use the format "c!request XXXXX".')
     elif re.search(r'^c!stock \w{1,5}', content):
         ticker = re.search(r'^c!stock (\w+)', content)[1]
         try:
@@ -60,7 +66,7 @@ async def on_message(message):
                 await turn_choose.add_reaction('🇽')
                 await turn_choose.add_reaction('🇴')
                 reaction, user = await client.wait_for('reaction_add', check=check, timeout=30)  # 30 seconds to react
-                await Tictactoe.run_game(message, client, '.........', 'X' if str(reaction.emoji) == '🇽' else 'O')
+                await Tictactoe.run_game(message, client, '.' * 9, 'X' if str(reaction.emoji) == '🇽' else 'O')
                 tictactoe_games.remove(message.author.id)
             except asyncio.TimeoutError:
                 await message.channel.send("Sorry, you didn't reply in time! Try c!tictactoe or c!ttt again!")

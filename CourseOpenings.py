@@ -30,6 +30,7 @@ def is_course_open(crn, driver):
     return 'NO SECTIONS FOUND FOR THIS INQUIRY' not in driver.page_source
 
 
+# Check if the course is valid
 def is_valid_course(driver):
     # Find the CRN element to edit
     course_number = driver.find_element_by_name('crn')

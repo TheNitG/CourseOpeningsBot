@@ -15,6 +15,7 @@ cols = dict()
 boxes = dict()
 
 
+# Solve the inputted sudoku problem
 async def sudoku_solve(message, puzzle):
     global length, N, subblock_height, subblock_width, symbol_set, constraints, calls, propagation, rows, cols
     available_chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"

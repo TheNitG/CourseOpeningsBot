@@ -1,10 +1,14 @@
+# Import necessary packages
 import asyncio
 import sys
 from collections import deque
 
+
+# Set the recursion limit to 50000
 sys.setrecursionlimit(50000)
 
 
+# Determines whether player X wins, player O wins, the game is not completed yet, or the game has ended in a tie
 def goal_test(board):
     if board[0:3] == "XXX" or board[3:6] == "XXX" or board[6:9] == "XXX" or board[::3] == "XXX" or board[1::3] == "XXX" \
             or board[2::3] == "XXX" or board[0] == "X" and board[4] == "X" and board[8] == "X" or board[2] == "X" \
@@ -19,11 +23,7 @@ def goal_test(board):
     return "Tie"
 
 
-"""
-Determines whether player X wins, player O wins, the game is not completed yet, or the game has ended in a tie
-"""
-
-
+# Finds all possible boards when player turn plays
 def possible_moves(board, turn):
     moves = set()
     for index, char in enumerate(board):
@@ -32,11 +32,7 @@ def possible_moves(board, turn):
     return moves
 
 
-"""
-Finds all possible boards when player turn plays
-"""
-
-
+# Finds all distinct games
 def distinct_games():
     queue = deque([(".........", "X")])
     count = 0
@@ -53,11 +49,7 @@ def distinct_games():
     return count
 
 
-"""
-Finds all distinct games
-"""
-
-
+# Finds all distinct final boards
 def distinct_final_boards():
     queue = deque([(".........", "X")])
     final_boards = {"........."}
@@ -77,11 +69,7 @@ def distinct_final_boards():
     return count
 
 
-"""
-Finds all distinct final boards
-"""
-
-
+# Finds all distinct final boards that are draws
 def distinct_final_boards_draw():
     queue = deque([(".........", "X")])
     final_boards = {"........."}
@@ -102,11 +90,7 @@ def distinct_final_boards_draw():
     return count
 
 
-"""
-Finds all distinct final boards that are draws
-"""
-
-
+# Finds all distinct final boards in which X wins in a given number of steps
 def distinct_final_boards_X_wins(steps):
     queue = deque([(".........", "X", 0)])
     final_boards = {"........."}
@@ -127,11 +111,7 @@ def distinct_final_boards_X_wins(steps):
     return count
 
 
-"""
-Finds all distinct final boards in which X wins in a given number of steps
-"""
-
-
+# Finds all distinct final boards in which O wins in a given number of steps
 def distinct_final_boards_O_wins(steps):
     queue = deque([(".........", "X", 0)])
     final_boards = {"........."}
@@ -150,11 +130,6 @@ def distinct_final_boards_O_wins(steps):
             else:
                 queue.append((child_node, "X", step_count + 1))
     return count
-
-
-"""
-Finds all distinct final boards in which O wins in a given number of steps
-"""
 
 
 async def print_board(message, board):
@@ -354,6 +329,7 @@ def minimize(board):
     return max(trying)
 
 
+# Runs the game method
 def evaluate_board(board):
     result = goal_test(board)
     if result != "Not finished":
@@ -364,8 +340,3 @@ def evaluate_board(board):
         if result == "O wins":
             return 0
     return -1
-
-
-"""
-Runs the game method
-"""

@@ -6,6 +6,7 @@ import yfinance as yf
 import mplfinance as mpf
 
 
+# Plot the stock price data for a certain stock
 async def plot_stock(message, ticker):
     # Define the ticker
     tick = yf.Ticker(ticker)
