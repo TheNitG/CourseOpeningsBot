@@ -19,7 +19,7 @@ def is_course_open(crn, driver):
     # Find the term dropdown to interact with
     select_term = Select(driver.find_element_by_name('TERMYEAR'))
     # Select the Spring 2021 (term of interest for add/drop right now) option
-    select_term.select_by_visible_text('Fall 2021')
+    select_term.select_by_visible_text('Spring 2022')
     # Find the course availability dropdown to interact with
     select_open = Select(driver.find_element_by_name('open_only'))
     # Select the only open sections option
