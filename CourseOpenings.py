@@ -18,8 +18,44 @@ def is_course_open(crn, driver):
     course_number.send_keys(str(crn))
     # Find the term dropdown to interact with
     select_term = Select(driver.find_element_by_name('TERMYEAR'))
-    # Select the Spring 2021 (term of interest for add/drop right now) option
-    select_term.select_by_visible_text('Spring 2022')
+    # Select the option for the latest term of interest for add/drop right now
+    # Find all options from the select
+    options = [x.text for x in select_term.options]
+    if len(options) == 1:  # Check if there is only one option
+        # Select the only option
+        select_term.select_by_visible_text(options[0])
+    else:  # Check if there are multiple options
+        # Get Spring, Summer, Fall, and Winter options with their latest years
+        spring, summer, fall, winter = 0, 0, 0, 0
+        for option in options:
+            season, year = option.split(' ')
+            year = int(year)
+            if 'Spring' == season:
+                spring = max(spring, year)
+            elif 'Summer' == season:
+                summer = max(summer, year)
+            elif 'Fall' == season:
+                fall = max(fall, year)
+            elif 'Winter' == season:
+                winter = max(winter, year)
+        # Get latest year
+        latest_year = max(spring, summer, fall, winter)
+        # Get latest season of latest year (Winter 23 < Spring 23 < Summer 23 < Fall 23)
+        latest_season = ''
+        # First check winter
+        if latest_year == winter:
+            latest_season = 'Winter'
+        # Then check spring
+        if latest_year == spring:
+            latest_season = 'Spring'
+        # Then check summer
+        if latest_year == summer:
+            latest_season = 'Summer'
+        # Then check fall
+        if latest_year == fall:
+            latest_season = 'Fall'
+        # Select the latest season and year option
+        select_term.select_by_visible_text(f'{latest_season} {latest_year}')
     # Find the course availability dropdown to interact with
     select_open = Select(driver.find_element_by_name('open_only'))
     # Select the only open sections option

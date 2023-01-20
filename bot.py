@@ -14,7 +14,9 @@ import Tictactoe
 load_dotenv()
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
 
 tictactoe_games = []
 
